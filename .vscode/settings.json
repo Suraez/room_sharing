@@ -1,0 +1,6 @@
+{
+  "dart.flutterHotReloadOnSave": "all",
+  "dart.hotReloadOnSave": "all",
+  "cmake.configureOnOpen": false,
+  "cmake.sourceDirectory": "D:/all_new_projects/room_sharing_app/room_app/linux/flutter"
+}
