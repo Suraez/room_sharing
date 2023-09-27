@@ -1,6 +1,6 @@
+import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:date_field/date_field.dart';
 
 class ItemForm extends StatefulWidget {
   const ItemForm({super.key});
@@ -11,7 +11,8 @@ class ItemForm extends StatefulWidget {
 
 class _ItemFormState extends State<ItemForm> {
   final _formKey = GlobalKey<FormState>();
-
+  final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -21,6 +22,7 @@ class _ItemFormState extends State<ItemForm> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextFormField(
+              controller: _itemNameController,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter Name',
@@ -30,6 +32,7 @@ class _ItemFormState extends State<ItemForm> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextFormField(
+              controller: _amountController,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter Amount',
@@ -54,6 +57,14 @@ class _ItemFormState extends State<ItemForm> {
               ),
             ),
           ),
+          ElevatedButton(
+            onPressed: () {
+              print('Item name: ${_itemNameController.text}');
+              print('Item amount: ${_amountController.text}');
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            child: const Text('Submit'),
+          )
         ],
       ),
     );
