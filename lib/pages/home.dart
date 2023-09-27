@@ -8,9 +8,13 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.amber[600],
           title: const Align(
             alignment: Alignment.centerLeft,
-            child: Text('Room Expenses'),
+            child: Text(
+              'Room Expenses',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           actions: <Widget>[
             IconButton(
@@ -30,27 +34,33 @@ class Home extends StatelessWidget {
 
   Widget bottomPart(BuildContext context) {
     return const BottomAppBar(
+        color: Colors.amber,
         child: SizedBox(
-      height: 100,
-      child: Row(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Text(
-                'Total Amount:',
-                style: TextStyle(fontSize: 24.0),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Total Amount:',
+                    style: TextStyle(fontSize: 24.0),
+                  )
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '1500',
+                    style: TextStyle(fontSize: 24.0),
+                  )
+                ],
               )
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[Text('5000')],
-          )
-        ],
-      ),
-    ));
+        ));
   }
 
   Widget itemList(BuildContext context) {
@@ -68,6 +78,7 @@ class Home extends StatelessWidget {
           height: 100,
           // child: Center(child: Text('Entry ${entries[index]}')),
           child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +102,7 @@ class Home extends StatelessWidget {
                     style: TextStyle(fontSize: 24.0),
                   ),
                   Text(
-                    'Priya',
+                    'Suraj',
                     style: TextStyle(fontSize: 14.0),
                   ),
                 ],

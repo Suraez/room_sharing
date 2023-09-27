@@ -23,7 +23,7 @@ class _ItemFormState extends State<ItemForm> {
             child: TextFormField(
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
-                labelText: 'Enter Item Name',
+                labelText: 'Enter Name',
               ),
             ),
           ),

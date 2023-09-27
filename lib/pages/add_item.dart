@@ -13,6 +13,7 @@ class _AddItemState extends State<AddItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
