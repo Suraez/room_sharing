@@ -58,10 +58,7 @@ class _ItemFormState extends State<ItemForm> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              print('Item name: ${_itemNameController.text}');
-              print('Item amount: ${_amountController.text}');
-            },
+            onPressed: () {},
             style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
             child: const Text('Submit'),
           )

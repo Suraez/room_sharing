@@ -12,7 +12,7 @@ class ListItem extends StatelessWidget {
           title: const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Room Expenses',
+              'Room Sharing',
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -27,16 +27,7 @@ class ListItem extends StatelessWidget {
               tooltip: 'Add Expense',
               icon: const Icon(Icons.add_circle),
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AddItem()),
-                );
-              },
-              tooltip: 'Log',
-              icon: const Icon(Icons.logout),
-            ),
+            const Text('Log out')
           ],
         ),
         body: itemList(context),
@@ -55,7 +46,7 @@ class ListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'Total Amount:',
+                    'Total Sfasd:',
                     style: TextStyle(fontSize: 24.0),
                   )
                 ],

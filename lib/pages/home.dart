@@ -1,8 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:room_app/pages/add_item.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:room_app/main.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  List<dynamic> fetchedItems = [
+    {'id': 1, 'name': 'groceries', 'amount': 100},
+    {'id': 2, 'name': 'vegetables', 'amount': 2000},
+  ];
+
+  Future<void> _signOut() async {
+    try {
+      await supabase.auth.signOut();
+    } on AuthException catch (error) {
+      SnackBar(
+        content: Text(error.message),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      );
+    } catch (error) {
+      SnackBar(
+        content: const Text('Unexpected error occurred'),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      );
+    } finally {
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // _fetchItems();
+  }
+
+  Future<void> _fetchItems() async {
+    final response = await supabase.from('items').select();
+    fetchedItems = response;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +62,27 @@ class Home extends StatelessWidget {
           ),
           actions: <Widget>[
             IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AddItem()),
-                  );
-                },
-                tooltip: 'Add Expense',
-                icon: const Icon(Icons.add_circle))
+              onPressed: () {
+                _fetchItems();
+              },
+              tooltip: 'Fetch',
+              icon: const Icon(Icons.filter_center_focus),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AddItem()));
+              },
+              tooltip: 'Add Expense',
+              icon: const Icon(Icons.add_circle),
+            ),
+            IconButton(
+              onPressed: () {
+                _signOut();
+              },
+              tooltip: 'Log out',
+              icon: const Icon(Icons.logout),
+            )
           ],
         ),
         body: itemList(context),
@@ -64,10 +121,10 @@ class Home extends StatelessWidget {
   }
 
   Widget itemList(BuildContext context) {
-    final List<String> entries = <String>['A', 'B', 'C'];
+    // final List<String> entries = <String>['A', 'B', 'C'];
     return ListView.separated(
       padding: const EdgeInsets.all(8),
-      itemCount: entries.length,
+      itemCount: fetchedItems.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
           padding: const EdgeInsets.all(10.0),
@@ -77,18 +134,18 @@ class Home extends StatelessWidget {
           ),
           height: 100,
           // child: Center(child: Text('Entry ${entries[index]}')),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'Vegetables',
+                    fetchedItems[index]['name'],
                     style: TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
                   Text(
-                    '2023-09-10',
+                    'adfasf',
                     style: TextStyle(fontSize: 16.0),
                   ),
                 ],
@@ -98,7 +155,7 @@ class Home extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '500',
+                    fetchedItems[index]['amount'].toString(),
                     style: TextStyle(fontSize: 24.0),
                   ),
                   Text(

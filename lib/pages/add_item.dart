@@ -21,11 +21,7 @@ class _AddItemState extends State<AddItem> {
           },
         ),
       ),
-      body: itemForm(context),
+      body: const ItemForm(),
     );
-  }
-
-  Widget itemForm(BuildContext context) {
-    return const ItemForm();
   }
 }
