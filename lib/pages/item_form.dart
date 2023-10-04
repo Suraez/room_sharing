@@ -1,6 +1,7 @@
 import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:room_app/main.dart';
 
 class ItemForm extends StatefulWidget {
   const ItemForm({super.key});
@@ -13,6 +14,19 @@ class _ItemFormState extends State<ItemForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+
+  Future<bool> _addItem() async {
+    try {
+      await supabase.from('items').insert({
+        'name': _itemNameController.text,
+        'amount': _amountController.text,
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -58,7 +72,22 @@ class _ItemFormState extends State<ItemForm> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () async {
+              try {
+                bool success = await _addItem();
+                if (success) {
+                  if (context.mounted) {
+                    Navigator.pushReplacementNamed(context, '/');
+                  } else {
+                    return;
+                  }
+                } else {
+                  debugPrint('Some error occured while insertion..');
+                }
+              } catch (e) {
+                debugPrint('Error during insertion: $e');
+              }
+            },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
             child: const Text('Submit'),
           )

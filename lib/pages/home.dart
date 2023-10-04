@@ -16,6 +16,8 @@ class _HomeState extends State<Home> {
     {'id': 2, 'name': 'vegetables', 'amount': 2000},
   ];
 
+  var totalAmount = 0;
+
   Future<void> _signOut() async {
     try {
       await supabase.auth.signOut();
@@ -39,13 +41,19 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // _fetchItems();
+    _fetchItems();
   }
 
   Future<void> _fetchItems() async {
     final response = await supabase.from('items').select();
     fetchedItems = response;
-    setState(() {});
+    int total = 0;
+    for (var item in response) {
+      total += item['amount'] as int;
+    }
+    setState(() {
+      totalAmount = total;
+    });
   }
 
   @override
@@ -90,14 +98,14 @@ class _HomeState extends State<Home> {
   }
 
   Widget bottomPart(BuildContext context) {
-    return const BottomAppBar(
+    return BottomAppBar(
         color: Colors.amber,
         child: SizedBox(
           height: 100,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Column(
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
@@ -110,7 +118,7 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '1500',
+                    '$totalAmount',
                     style: TextStyle(fontSize: 24.0),
                   )
                 ],
@@ -142,9 +150,9 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   Text(
                     fetchedItems[index]['name'],
-                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                    style: const TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
-                  Text(
+                  const Text(
                     'adfasf',
                     style: TextStyle(fontSize: 16.0),
                   ),
@@ -158,7 +166,7 @@ class _HomeState extends State<Home> {
                     fetchedItems[index]['amount'].toString(),
                     style: TextStyle(fontSize: 24.0),
                   ),
-                  Text(
+                  const Text(
                     'Suraj',
                     style: TextStyle(fontSize: 14.0),
                   ),
