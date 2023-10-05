@@ -59,13 +59,75 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: Drawer(
+          backgroundColor: Colors.amber[200],
+          child: ListView(
+            children: [
+              DrawerHeader(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.account_circle,
+                            color: Colors.amber,
+                          ),
+                        )
+                      ],
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Hello there!',
+                            style:
+                                TextStyle(fontSize: 32.0, color: Colors.amber),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: _signOut,
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.amber),
+                          ),
+                          child: const Row(
+                            children: [
+                              Text(
+                                'Logout',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: Colors.amber[600],
           title: const Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Room Expenses',
-              style: TextStyle(color: Colors.black),
             ),
           ),
           actions: <Widget>[
