@@ -33,12 +33,12 @@ class _AccountPageState extends State<AccountPage> {
     } on PostgrestException catch (error) {
       SnackBar(
         content: Text(error.message),
-        backgroundColor: Theme.of(context).colorScheme.error,
+        backgroundColor: const Color.fromARGB(255, 41, 39, 39),
       );
     } catch (error) {
-      SnackBar(
-        content: const Text('Unexpected error occurred'),
-        backgroundColor: Theme.of(context).colorScheme.error,
+      const SnackBar(
+        content: Text('Unexpected error occurred'),
+        backgroundColor: Color.fromARGB(255, 41, 39, 39),
       );
     } finally {
       if (mounted) {
@@ -73,12 +73,12 @@ class _AccountPageState extends State<AccountPage> {
     } on PostgrestException catch (error) {
       SnackBar(
         content: Text(error.message),
-        backgroundColor: Theme.of(context).colorScheme.error,
+        backgroundColor: const Color.fromARGB(255, 41, 39, 39),
       );
     } catch (error) {
-      SnackBar(
-        content: const Text('Unexpected error occurred'),
-        backgroundColor: Theme.of(context).colorScheme.error,
+      const SnackBar(
+        content: Text('Unexpected error occurred'),
+        backgroundColor: Color.fromARGB(255, 41, 39, 39),
       );
     } finally {
       if (mounted) {

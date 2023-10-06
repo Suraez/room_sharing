@@ -38,9 +38,13 @@ class _ItemFormState extends State<ItemForm> {
             child: TextFormField(
               controller: _itemNameController,
               decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.amber),
+                ),
                 labelText: 'Enter Name',
+                labelStyle: TextStyle(color: Colors.amber),
               ),
+              cursorColor: Colors.amber,
             ),
           ),
           Padding(
@@ -48,9 +52,13 @@ class _ItemFormState extends State<ItemForm> {
             child: TextFormField(
               controller: _amountController,
               decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.amber),
+                ),
                 labelText: 'Enter Amount',
+                labelStyle: TextStyle(color: Colors.amber),
               ),
+              cursorColor: Colors.amber,
               keyboardType:
                   TextInputType.number, // Set the keyboard type to numeric
               inputFormatters: <TextInputFormatter>[
