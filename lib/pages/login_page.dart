@@ -76,22 +76,66 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign In')),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-        children: [
-          const Text('Sign in via the magic link with your email below'),
-          const SizedBox(height: 18),
-          TextFormField(
-            controller: _emailController,
-            decoration: const InputDecoration(labelText: 'Email'),
+      backgroundColor: Colors.amber,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.group,
+                    size: 50.0,
+                  ),
+                  Text(
+                    'Room Sharing App',
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: TextFormField(
+                    controller: _emailController,
+                    style: const TextStyle(color: Colors.amber),
+                    decoration: const InputDecoration(
+                      hintText: 'Enter Your Email',
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(color: Colors.amber),
+                    ),
+                    cursorColor: Colors.amber,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _signIn,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber.shade600,
+                ),
+                child: Text(_isLoading ? 'Loading' : 'Sign In/ Up'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('Developed by Suraj Ojha'),
+            ],
           ),
-          const SizedBox(height: 18),
-          ElevatedButton(
-            onPressed: _isLoading ? null : _signIn,
-            child: Text(_isLoading ? 'Loading' : 'Sign Up/Login'),
-          ),
-        ],
+        ),
       ),
     );
   }

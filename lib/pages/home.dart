@@ -12,9 +12,34 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<dynamic> fetchedItems = [
-    {'id': 1, 'name': 'groceries', 'amount': 100},
-    {'id': 2, 'name': 'vegetables', 'amount': 2000},
+    // {'id': 1, 'name': 'groceries', 'amount': 100},
+    // {'id': 2, 'name': 'vegetables', 'amount': 2000},
   ];
+
+  String username = 'Suraj';
+
+  Future<void> _getProfile() async {
+    try {
+      final userId = supabase.auth.currentUser!.id;
+      final data = await supabase
+          .from('profiles')
+          .select<Map<String, dynamic>>()
+          .eq('id', userId)
+          .single();
+      username = (data['username'] ?? '') as String;
+      setState(() {});
+    } on PostgrestException catch (error) {
+      SnackBar(
+        content: Text(error.message),
+        backgroundColor: const Color.fromARGB(255, 41, 39, 39),
+      );
+    } catch (error) {
+      const SnackBar(
+        content: Text('Unexpected error occurred'),
+        backgroundColor: Color.fromARGB(255, 41, 39, 39),
+      );
+    }
+  }
 
   var totalAmount = 0;
 
@@ -24,12 +49,12 @@ class _HomeState extends State<Home> {
     } on AuthException catch (error) {
       SnackBar(
         content: Text(error.message),
-        backgroundColor: Theme.of(context).colorScheme.error,
+        backgroundColor: const Color.fromARGB(255, 41, 39, 39),
       );
     } catch (error) {
-      SnackBar(
-        content: const Text('Unexpected error occurred'),
-        backgroundColor: Theme.of(context).colorScheme.error,
+      const SnackBar(
+        content: Text('Unexpected error occurred'),
+        backgroundColor: Color.fromARGB(255, 41, 39, 39),
       );
     } finally {
       if (mounted) {
@@ -42,12 +67,17 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _fetchItems();
+    _getProfile();
   }
 
   Future<void> _fetchItems() async {
-    final response = await supabase.from('items').select();
+    final response = await supabase
+        .from('items')
+        .select('*, profiles(*)')
+        .order('created_at', ascending: false);
     fetchedItems = response;
     int total = 0;
+    // debugPrint('fetchedItems are $fetchedItems');
     for (var item in response) {
       total += item['amount'] as int;
     }
@@ -59,13 +89,77 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: Drawer(
+          backgroundColor: Colors.amber[200],
+          child: ListView(
+            children: [
+              DrawerHeader(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.account_circle,
+                            color: Colors.amber,
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Hello $username',
+                            style: const TextStyle(
+                              fontSize: 32.0,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: _signOut,
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.amber),
+                          ),
+                          child: const Row(
+                            children: [
+                              Text(
+                                'Logout',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: Colors.amber[600],
           title: const Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Room Expenses',
-              style: TextStyle(color: Colors.black),
             ),
           ),
           actions: <Widget>[
@@ -84,13 +178,6 @@ class _HomeState extends State<Home> {
               tooltip: 'Add Expense',
               icon: const Icon(Icons.add_circle),
             ),
-            IconButton(
-              onPressed: () {
-                _signOut();
-              },
-              tooltip: 'Log out',
-              icon: const Icon(Icons.logout),
-            )
           ],
         ),
         body: itemList(context),
@@ -119,7 +206,7 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   Text(
                     '$totalAmount',
-                    style: TextStyle(fontSize: 24.0),
+                    style: const TextStyle(fontSize: 24.0),
                   )
                 ],
               )
@@ -140,7 +227,7 @@ class _HomeState extends State<Home> {
             color: Colors.amber[400], // Set the background color
             borderRadius: BorderRadius.circular(20.0), // Set the border radius
           ),
-          height: 100,
+          height: 70,
           // child: Center(child: Text('Entry ${entries[index]}')),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,9 +239,9 @@ class _HomeState extends State<Home> {
                     fetchedItems[index]['name'],
                     style: const TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
-                  const Text(
-                    'adfasf',
-                    style: TextStyle(fontSize: 16.0),
+                  Text(
+                    fetchedItems[index]['created_at'].substring(0, 10) ?? '',
+                    style: const TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
@@ -164,11 +251,13 @@ class _HomeState extends State<Home> {
                 children: [
                   Text(
                     fetchedItems[index]['amount'].toString(),
-                    style: TextStyle(fontSize: 24.0),
+                    style: const TextStyle(fontSize: 24.0),
                   ),
-                  const Text(
-                    'Suraj',
-                    style: TextStyle(fontSize: 14.0),
+                  Text(
+                    fetchedItems[index]['profiles'] != null
+                        ? fetchedItems[index]['profiles']['username']
+                        : '',
+                    style: const TextStyle(fontSize: 14.0),
                   ),
                 ],
               )
